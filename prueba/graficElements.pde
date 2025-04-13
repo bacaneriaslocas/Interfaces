@@ -1,5 +1,51 @@
 import javax.sound.sampled.*;
 
+class Grafica {
+    float x;
+    float y;
+    float ancho;
+    float alto;
+    
+    Grafica(float tempX, float tempY, float tempAncho, float tempAlto) {
+        x = tempX;
+        y = tempY;
+        ancho = tempAncho;
+        alto = tempAlto;
+    }
+    
+    void mostrarX(float[] variableX) {
+        float min = variableX[0];
+        float max = variableX[0];
+        
+        for (int i = 0; i < variableX.length; i++) {  // sacamos los minimos y maximos para graficar mejor
+            if (variableX[i] < min) {
+                min = variableX[i];
+            }
+            if (variableX[i] > max) {
+                max = variableX[i];
+            }
+        }
+        
+        float escala = alto * 0.87 / max;
+        float ofset = min * escala;
+        
+        println(escala);
+        
+        fill(255);
+        stroke(100);
+        rect(x, y, ancho, alto);
+        
+        strokeWeight(3);
+        line(x + ancho * 0.1, y + alto * 0.03, x + ancho * 0.1, y + alto * 0.97); // Eje Y
+        line(x + ancho * 0.03, y + alto * 0.9, x + ancho * 0.93, y + alto * 0.9); // Eje X  
+        
+        for (int i = 0; i < variableX.length - 1; i++) {
+            line(x + ancho * 0.1 + ancho * 0.87 / variableX.length * i, -variableX[i] * escala + y + alto * 0.9 + ofset, x + ancho * 0.1 + ancho * 0.87 / variableX.length * (i + 1), -variableX[i + 1] * escala + y + alto * 0.9 + ofset);
+        }
+    }
+}
+
+
 class CampoTexto {
     float x;
     float y;
@@ -86,7 +132,7 @@ class CampoTexto {
             text(textoAmostrar,x + ancho * 0.03,y + alto * 0.8);
         }
     }
-
+    
     String texto() {
         return texto;
     }
@@ -105,7 +151,7 @@ class CampoTexto {
     boolean clic() {  // verificamos si se ha producido un clic para no enviar constantemente la señal de pulsado
         if (pulsado() && clic == false && block == false) {
             clic = true;
-            //playTone(700, 70);
+            // playTone(700, 70);
             return true;
         } else {
             if (mousePressed == false) {
@@ -166,7 +212,7 @@ class Boton {
     color colorTexto = #000000;
     
     //Constructor para inicializar el botón
-    Boton(float tempX, float tempY, float tempAncho, float tempAlto, String tempEtiqueta, float tempTamaño) {
+    Boton(float tempX, float tempY, float tempAncho, float tempAlto,String tempEtiqueta, float tempTamaño) {
         x = tempX - tempAncho / 2;
         y = tempY - tempAlto / 2;
         ancho = tempAncho;
@@ -215,7 +261,7 @@ class Boton {
         if (mouseSobre() && !pulsado()) {    // Cambiar el color cuando el ratón está sobre el botón
             fill(colorSobre);
         } else {
-            if (mouseSobre() && pulsado()) {      // Dibujar el botón basado en su estado normal o pulsado
+            if (mouseSobre() && pulsado()) {      // Dibujarel botón basado en su estado normal o pulsado
                 fill(colorPulsado);
             } else {
                 fill(colorNormal);
